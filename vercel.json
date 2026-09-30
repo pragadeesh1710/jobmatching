@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    { "source": "/LoginServlet", "destination": "/api/index.js" },
+    { "source": "/RegisterServlet", "destination": "/api/index.js" },
+    { "source": "/MatchServlet", "destination": "/api/index.js" },
+    { "source": "/XPathServlet", "destination": "/api/index.js" },
+    { "source": "/RoleServlet", "destination": "/api/index.js" },
+    { "source": "/SkillServlet", "destination": "/api/index.js" },
+    { "source": "/ProfileServlet", "destination": "/api/index.js" },
+    { "source": "/LogoutServlet", "destination": "/api/index.js" }
+  ]
+}
