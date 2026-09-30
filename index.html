@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RoleMatch – Student Role Matching System</title>
+  <meta name="description" content="A complete Web Technology Lab project demonstrating HTML5, CSS3, JavaScript, Java Servlets, HTTP Session, Cookies, AJAX, XML, XPath, MySQL, and JDBC." />
+  <meta property="og:title" content="RoleMatch – Student Role Matching System" />
+  <meta property="og:description" content="A complete Web Technology Lab project demonstrating HTML5, CSS3, JavaScript, Java Servlets, HTTP Session, Cookies, AJAX, XML, XPath, MySQL, and JDBC." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar (Top Bar Contract: Brand | Links | Actions) -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-link">
+        RoleMatch
+        <span class="brand-badge">Web Tech Lab</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html" class="active">Home</a>
+        <a href="#about">About System</a>
+        <a href="#categories">Job Categories</a>
+        <a href="#concepts">Lab Concepts</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="login.html" id="navLoginBtn" class="btn btn-outline btn-sm">Log In</a>
+        <a href="register.html" id="navRegisterBtn" class="btn btn-primary btn-sm">Register</a>
+        <a href="dashboard.html" id="navDashboardBtn" class="btn btn-primary btn-sm" style="display:none;">Dashboard</a>
+        <button onclick="AuthController.logout()" id="navLogoutBtn" class="btn btn-outline btn-sm" style="display:none;">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-kicker">Web Technology Laboratory Project</div>
+      <h1 class="hero-title">Bridge the Gap Between Your Skills & Industry Job Roles</h1>
+      <p class="hero-subtitle">
+        RoleMatch empowers college students to map their acquired technical skills against real-world engineering roles, compute match percentages, identify skill gaps, and explore role schemas via XML &amp; XPath.
+      </p>
+
+      <div class="hero-cta">
+        <a href="register.html" class="btn btn-primary">Student Registration</a>
+        <a href="login.html" class="btn btn-outline">Student Login</a>
+        <a href="dashboard.html" class="btn btn-secondary">Explore Demo Dashboard</a>
+      </div>
+
+      <!-- Lab Demonstration Strip -->
+      <div class="concepts-strip" id="concepts">
+        <div class="concepts-header">Core Web Technology Concepts Demonstrated</div>
+        <div class="concepts-grid">
+          <span class="concept-item">1. <span class="code">HTML5</span> Page Structure</span>
+          <span class="concept-item">2. <span class="code">CSS3</span> Responsive Styling</span>
+          <span class="concept-item">3. <span class="code">JavaScript</span> Form Validation</span>
+          <span class="concept-item">4. <span class="code">Java Servlets</span> Backend Processing</span>
+          <span class="concept-item">5. <span class="code">HTTP Session</span> Login State</span>
+          <span class="concept-item">6. <span class="code">Cookies</span> Remember Preferences</span>
+          <span class="concept-item">7. <span class="code">AJAX</span> Async Server Calls</span>
+          <span class="concept-item">8. <span class="code">XML + XPath</span> Role Querying</span>
+          <span class="concept-item">9. <span class="code">MySQL</span> Database Storage</span>
+          <span class="concept-item">10. <span class="code">JDBC</span> PreparedStatement</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="container" id="about" style="padding-top: 3.5rem;">
+      <div style="text-align: center; max-width: 750px; margin: 0 auto 2.5rem;">
+        <h2 style="font-size: 1.85rem; font-weight: 800; letter-spacing: -0.02em;">About the Role Matching System</h2>
+        <p style="color: var(--text-secondary); margin-top: 0.5rem; font-size: 1rem;">
+          In standard campus placements and technical interviews, students often wonder which engineering career path best matches their coursework and programming competencies. RoleMatch solves this by algorithmically comparing student skill profiles with predefined industry role requirements.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+        <div class="card">
+          <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">
+            1. Profile &amp; Skill Database
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+            Students register their profile and choose from 20+ standardized skills (Java, Python, HTML/CSS, React, MySQL, Docker, etc.). All user details and relational skill mappings are permanently stored in MySQL tables via JDBC.
+          </p>
+        </div>
+
+        <div class="card">
+          <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">
+            2. Real-time AJAX Matching Algorithm
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+            Whenever students add or remove skills, an asynchronous AJAX request is dispatched to <code>MatchServlet</code>. The server computes match percentage <code>(matched / total * 100)</code> and dynamically ranks all roles with instant visual progress bars.
+          </p>
+        </div>
+
+        <div class="card">
+          <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">
+            3. XML &amp; XPath Query Engine
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+            In addition to relational tables, the system maintains a structured <code>roles.xml</code> repository. <code>XPathServlet</code> demonstrates standard W3C XPath parsing to filter roles by category, required skills, and salary bands.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Available Job Categories Section -->
+    <section class="container" id="categories" style="padding-top: 2.5rem; padding-bottom: 4rem;">
+      <div style="text-align: center; max-width: 750px; margin: 0 auto 2rem;">
+        <h2 style="font-size: 1.85rem; font-weight: 800; letter-spacing: -0.02em;">Available Job Categories &amp; Roles</h2>
+        <p style="color: var(--text-secondary); margin-top: 0.4rem; font-size: 0.95rem;">
+          RoleMatch covers 10 predefined industry tracks spanning major software disciplines.
+        </p>
+      </div>
+
+      <div class="grid-cards">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Backend Development</h3>
+              <div class="card-meta">
+                <span>Java Developer</span>
+                <span class="separator">·</span>
+                <span>Python Developer</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-description">
+            Focus on server-side business logic, microservices, REST APIs, database interactions, and high-concurrency systems.
+          </p>
+          <div class="skills-wrap">
+            <span class="skill-tag">Java</span>
+            <span class="skill-tag">JDBC</span>
+            <span class="skill-tag">Servlet</span>
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">MySQL</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Frontend &amp; Full Stack</h3>
+              <div class="card-meta">
+                <span>Web Developer</span>
+                <span class="separator">·</span>
+                <span>Full Stack Developer</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-description">
+            Build dynamic client interfaces and end-to-end architectures connecting HTML5, CSS3, JavaScript, Servlets, and relational data.
+          </p>
+          <div class="skills-wrap">
+            <span class="skill-tag">HTML</span>
+            <span class="skill-tag">CSS</span>
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">React</span>
+            <span class="skill-tag">REST API</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Data Science &amp; Analytics</h3>
+              <div class="card-meta">
+                <span>Data Analyst</span>
+                <span class="separator">·</span>
+                <span>Data Engineer</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-description">
+            Transform raw corporate and web data into actionable business intelligence using statistical analysis, numerical models, and SQL querying.
+          </p>
+          <div class="skills-wrap">
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">Pandas</span>
+            <span class="skill-tag">NumPy</span>
+            <span class="skill-tag">MySQL</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Quality Assurance &amp; Testing</h3>
+              <div class="card-meta">
+                <span>Software Tester</span>
+                <span class="separator">·</span>
+                <span>Automation QA</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-description">
+            Verify application stability, write test specifications, and automate regression test suites using Selenium WebDriver and JUnit.
+          </p>
+          <div class="skills-wrap">
+            <span class="skill-tag">Java</span>
+            <span class="skill-tag">Selenium</span>
+            <span class="skill-tag">JUnit</span>
+            <span class="skill-tag">Git</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Database Administration</h3>
+              <div class="card-meta">
+                <span>Database Developer</span>
+                <span class="separator">·</span>
+                <span>SQL Architect</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-description">
+            Model entity relationships, optimize complex join operations, write stored procedures, and ensure transactional data integrity.
+          </p>
+          <div class="skills-wrap">
+            <span class="skill-tag">MySQL</span>
+            <span class="skill-tag">PostgreSQL</span>
+            <span class="skill-tag">JDBC</span>
+            <span class="skill-tag">Linux</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">DevOps &amp; Infrastructure</h3>
+              <div class="card-meta">
+                <span>DevOps Engineer</span>
+                <span class="separator">·</span>
+                <span>Cloud Engineer</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-description">
+            Automate continuous integration and deployment pipelines, containerize applications with Docker, and manage cloud servers.
+          </p>
+          <div class="skills-wrap">
+            <span class="skill-tag">Linux</span>
+            <span class="skill-tag">Docker</span>
+            <span class="skill-tag">AWS</span>
+            <span class="skill-tag">Git</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="/api/download-project">Download Java EE Project (.zip)</a>
+    </div>
+    <div>RoleMatch – Student Role Matching System · Web Technology Laboratory Project</div>
+  </footer>
+
+  <script src="/js/ajax.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

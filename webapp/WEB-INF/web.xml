@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                             http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <!-- =================================================================== -->
+    <!-- Web Technology Lab Project: RoleMatch - Student Role Matching System-->
+    <!-- Standard Deployment Descriptor (web.xml)                             -->
+    <!-- Demonstrates: Servlet mapping, session configuration, welcome files -->
+    <!-- =================================================================== -->
+
+    <display-name>RoleMatch - Student Role Matching System</display-name>
+    <description>
+        Web Technology Lab Java EE Application demonstrating HTML5, CSS3, JavaScript,
+        Java Servlets, HTTP Session, Cookies, AJAX, XML+XPath, MySQL, and JDBC.
+    </description>
+
+    <!-- Welcome File List -->
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+        <welcome-file>login.html</welcome-file>
+    </welcome-file-list>
+
+    <!-- Session Configuration: 30 minutes session timeout -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+        <cookie-config>
+            <name>JSESSIONID</name>
+            <http-only>true</http-only>
+            <secure>false</secure>
+        </cookie-config>
+    </session-config>
+
+    <!-- 1. Login Servlet -->
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>com.rolematch.controller.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- 2. Register Servlet -->
+    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>com.rolematch.controller.RegisterServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/RegisterServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- 3. Logout Servlet -->
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>com.rolematch.controller.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/LogoutServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- 4. Profile Servlet -->
+    <servlet>
+        <servlet-name>ProfileServlet</servlet-name>
+        <servlet-class>com.rolematch.controller.ProfileServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProfileServlet</servlet-name>
+        <url-pattern>/ProfileServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- 5. Role Servlet -->
+    <servlet>
+        <servlet-name>RoleServlet</servlet-name>
+        <servlet-class>com.rolematch.controller.RoleServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RoleServlet</servlet-name>
+        <url-pattern>/RoleServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- 6. Match Servlet (AJAX Role Matching Engine) -->
+    <servlet>
+        <servlet-name>MatchServlet</servlet-name>
+        <servlet-class>com.rolematch.controller.MatchServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MatchServlet</servlet-name>
+        <url-pattern>/MatchServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- 7. Skill Servlet (AJAX Skills Provider) -->
+    <servlet>
+        <servlet-name>SkillServlet</servlet-name>
+        <servlet-class>com.rolematch.controller.SkillServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SkillServlet</servlet-name>
+        <url-pattern>/SkillServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- 8. XPath Servlet (XML + XPath Query Processor) -->
+    <servlet>
+        <servlet-name>XPathServlet</servlet-name>
+        <servlet-class>com.rolematch.controller.XPathServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>XPathServlet</servlet-name>
+        <url-pattern>/XPathServlet</url-pattern>
+    </servlet-mapping>
+
+</web-app>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Registration – RoleMatch</title>
+  <meta name="description" content="Register student profile with technical skills in MySQL database with real-time JavaScript validation." />
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-link">
+        RoleMatch
+        <span class="brand-badge">Registration Module</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="login.html">Login</a>
+        <a href="register.html" class="active">Student Registration</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-outline btn-sm">Existing Student? Log In</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="auth-wrapper" style="max-width: 680px;">
+      <div class="auth-card">
+        <div class="auth-header">
+          <h1>Student Registration</h1>
+          <p>Create your engineering profile and select technical skills for matching</p>
+        </div>
+
+        <div id="registerAlert" style="display: none;"></div>
+
+        <form id="registerForm" method="POST" action="/RegisterServlet" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="name">Full Name *</label>
+              <input type="text" id="name" name="name" class="form-input" placeholder="e.g. Rahul Sharma" required>
+              <div id="nameError" class="form-error"></div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="email">College Email Address *</label>
+              <input type="email" id="email" name="email" class="form-input" placeholder="e.g. rahul@college.edu" required>
+              <div id="emailError" class="form-error"></div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="password">Password *</label>
+              <input type="password" id="password" name="password" class="form-input" placeholder="Minimum 6 characters" required>
+              <div id="passwordError" class="form-error"></div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="phone">Phone Number *</label>
+              <input type="tel" id="phone" name="phone" class="form-input" placeholder="10 digit mobile number" maxlength="10" required>
+              <div id="phoneError" class="form-error"></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="college">College / University Name *</label>
+            <input type="text" id="college" name="college" class="form-input" value="National Institute of Technology" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="department">Department / Branch *</label>
+              <select id="department" name="department" class="form-select" required>
+                <option value="Computer Science and Engineering">Computer Science &amp; Engineering (CSE)</option>
+                <option value="Information Technology">Information Technology (IT)</option>
+                <option value="Electronics and Communication">Electronics &amp; Communication (ECE)</option>
+                <option value="Data Science & AI">Data Science &amp; AI</option>
+                <option value="Electrical Engineering">Electrical Engineering (EE)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="year">Year of Study *</label>
+              <select id="year" name="year" class="form-select" required>
+                <option value="1">1st Year</option>
+                <option value="2">2nd Year</option>
+                <option value="3" selected>3rd Year (Pre-Final)</option>
+                <option value="4">4th Year (Final Year)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="preferredRole">Preferred Job Track *</label>
+            <select id="preferredRole" name="preferredRole" class="form-select" required>
+              <option value="Java Developer">Java Developer (Backend)</option>
+              <option value="Web Developer">Web Developer (Full Stack)</option>
+              <option value="Frontend Developer">Frontend Developer</option>
+              <option value="Backend Developer">Backend Developer</option>
+              <option value="Full Stack Developer">Full Stack Developer</option>
+              <option value="Python Developer">Python Developer</option>
+              <option value="Data Analyst">Data Analyst</option>
+              <option value="Software Tester">Software Tester (QA)</option>
+              <option value="Database Developer">Database Developer</option>
+              <option value="DevOps Engineer">DevOps Engineer</option>
+            </select>
+            <div class="form-hint">Will also be saved in your browser cookie upon login.</div>
+          </div>
+
+          <!-- Skills Selection Checkboxes (Fetched via SkillServlet AJAX) -->
+          <div class="form-group">
+            <label class="form-label">
+              Technical Skills * 
+              <span style="font-weight: normal; font-size: 0.8rem; color: var(--text-muted);">(Select all skills you currently possess)</span>
+            </label>
+            <div id="skillsSelectGrid" class="skills-select-grid">
+              <!-- Dynamically populated by AJAX, with initial fallback items -->
+              <label class="skill-checkbox-item"><input type="checkbox" name="skills" value="Java" checked> <span>Java</span></label>
+              <label class="skill-checkbox-item"><input type="checkbox" name="skills" value="HTML" checked> <span>HTML</span></label>
+              <label class="skill-checkbox-item"><input type="checkbox" name="skills" value="CSS" checked> <span>CSS</span></label>
+              <label class="skill-checkbox-item"><input type="checkbox" name="skills" value="JavaScript" checked> <span>JavaScript</span></label>
+              <label class="skill-checkbox-item"><input type="checkbox" name="skills" value="MySQL" checked> <span>MySQL</span></label>
+              <label class="skill-checkbox-item"><input type="checkbox" name="skills" value="JDBC"> <span>JDBC</span></label>
+              <label class="skill-checkbox-item"><input type="checkbox" name="skills" value="Servlet"> <span>Servlet</span></label>
+              <label class="skill-checkbox-item"><input type="checkbox" name="skills" value="Python"> <span>Python</span></label>
+              <label class="skill-checkbox-item"><input type="checkbox" name="skills" value="React"> <span>React</span></label>
+              <label class="skill-checkbox-item"><input type="checkbox" name="skills" value="Git"> <span>Git</span></label>
+              <label class="skill-checkbox-item"><input type="checkbox" name="skills" value="Docker"> <span>Docker</span></label>
+              <label class="skill-checkbox-item"><input type="checkbox" name="skills" value="REST API"> <span>REST API</span></label>
+            </div>
+            <div id="skillsError" class="form-error"></div>
+          </div>
+
+          <button type="submit" id="registerSubmitBtn" class="btn btn-primary" style="width: 100%; padding: 0.75rem; margin-top: 0.5rem;">
+            Register Student Profile via RegisterServlet
+          </button>
+        </form>
+
+        <div style="margin-top: 1.25rem; text-align: center; font-size: 0.85rem; color: var(--text-secondary);">
+          Already registered? <a href="login.html">Log in to your account</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div>RoleMatch – Web Technology Lab Project · Client-Side Validation &amp; JDBC Storage</div>
+  </footer>
+
+  <script src="/js/ajax.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      AuthController.initRegister();
+    });
+  </script>
+</body>
+</html>

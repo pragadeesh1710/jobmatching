@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard – RoleMatch</title>
+  <meta name="description" content="RoleMatch Student Dashboard: View Profile, Match Roles with AJAX algorithm, Query roles.xml with XPath, and Inspect Cookies & Sessions." />
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="dashboard.html" class="brand-link">
+        RoleMatch
+        <span class="brand-badge">Student Portal</span>
+      </a>
+
+      <div class="nav-actions">
+        <button id="openCodeViewerBtn" class="btn lab-inspector-btn btn-sm" title="View Java Servlets, XML, and SQL code">
+          📋 Lab Code &amp; Viva Guide
+        </button>
+        <button onclick="DashboardController.logout()" class="btn btn-outline btn-sm">
+          Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Student Banner & Session Badges -->
+  <section class="dashboard-header">
+    <div class="student-banner">
+      <div class="student-meta">
+        <h2 id="studentName">Student Profile</h2>
+        <div class="student-subline">
+          <span id="studentDepartment">Department</span>
+          <span style="color:var(--text-light);">·</span>
+          <span id="studentCollege">College</span>
+          <span style="color:var(--text-light);">·</span>
+          <span>Target: <strong id="studentPreferredRole" style="color:var(--brand-primary);">Software Role</strong></span>
+        </div>
+      </div>
+
+      <!-- Live Web Tech State Badges -->
+      <div style="display:flex; flex-direction:column; gap:0.35rem; align-items:flex-end;">
+        <span class="session-badge" id="activeSessionId" title="Created via HttpServletRequest.getSession()">
+          JSESSIONID: RM_SESS_ACTIVE
+        </span>
+        <span class="cookie-badge" id="activeCookiePref" title="Read via document.cookie and HttpServletRequest.getCookies()">
+          Cookie: preferred_category=Loaded
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <main class="main-content container">
+
+    <!-- Dashboard Navigation Tabs -->
+    <nav class="dashboard-tabs">
+      <button class="tab-btn active" data-tab="tab-matcher">
+        🎯 Role Match Engine (AJAX)
+      </button>
+      <button class="tab-btn" data-tab="tab-profile">
+        👤 My Profile &amp; Skills
+      </button>
+      <button class="tab-btn" data-tab="tab-allroles">
+        📚 All Roles Database
+      </button>
+      <button class="tab-btn" data-tab="tab-xpath">
+        🔍 XML &amp; XPath Lab
+      </button>
+      <button class="tab-btn" data-tab="tab-cookies">
+        🍪 Cookies &amp; Session Inspector
+      </button>
+    </nav>
+
+    <!-- =================================================================== -->
+    <!-- TAB 1: Role Match Engine (AJAX + Algorithm)                         -->
+    <!-- =================================================================== -->
+    <div id="tab-matcher" class="tab-panel active">
+      
+      <!-- Stats Toolbar -->
+      <div class="matcher-toolbar">
+        <div class="matcher-stats">
+          <div class="stat-item">
+            <span class="stat-value" id="matchingRolesCount">0</span>
+            <span class="stat-label">Matching Roles</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value" id="highMatchCount" style="color:var(--success);">0</span>
+            <span class="stat-label">High Matches (&ge; 70%)</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value" id="studentSkillsCount">0</span>
+            <span class="stat-label">Your Active Skills</span>
+          </div>
+        </div>
+
+        <!-- Real-time Skill Quick-Add for AJAX Demonstration -->
+        <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+          <label style="font-size:0.8rem; font-weight:600; color:var(--text-secondary);">Test AJAX Matching:</label>
+          <select id="addSkillSelect" class="form-select" style="width:auto; padding:0.35rem 0.65rem; font-size:0.82rem;" onchange="if(this.value){ DashboardController.addSkill(this.value); this.value=''; }">
+            <option value="">-- Add another skill --</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Live Skills Ribbon -->
+      <div style="background:var(--surface-bg); border:1px solid var(--surface-border); border-radius:var(--radius-lg); padding:1rem 1.25rem; margin-bottom:1.5rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+          <span style="font-size:0.82rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); letter-spacing:0.04em;">
+            Your Current Skills (Click &times; to remove and watch AJAX recalculate instantly):
+          </span>
+          <span style="font-size:0.75rem; color:var(--text-muted);">Stored in MySQL <code>user_skills</code> table</span>
+        </div>
+        <div id="currentSkillsWrap" class="skills-wrap">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Loading Indicator -->
+      <div id="matchLoading" style="display:none; text-align:center; padding:1.5rem; color:var(--brand-primary); font-weight:600;">
+        Calculating matching percentages via MatchServlet (AJAX)...
+      </div>
+
+      <!-- Recommended Roles Cards Grid -->
+      <div style="margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="font-size:1.25rem; font-weight:700;">Recommended Roles Ranked by Match Percentage</h3>
+        <span style="font-size:0.8rem; color:var(--text-muted);">
+          Algorithm: <code>(matched_skills / total_required_skills) &times; 100</code>
+        </span>
+      </div>
+
+      <div id="recommendedRolesGrid" class="grid-cards">
+        <!-- Rendered by JavaScript via AJAX response from /MatchServlet -->
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 2: My Profile & Skills Management                               -->
+    <!-- =================================================================== -->
+    <div id="tab-profile" class="tab-panel">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+        
+        <div class="card">
+          <h3 class="card-title" style="margin-bottom:1rem;">Student Academic Details</h3>
+          <table class="table" style="font-size:0.88rem;">
+            <tbody>
+              <tr><th style="width:35%;">Full Name</th><td id="profName">Rahul Sharma</td></tr>
+              <tr><th>Email</th><td id="profEmail">rahul.sharma@college.edu</td></tr>
+              <tr><th>Phone</th><td id="profPhone">+91 9876543210</td></tr>
+              <tr><th>College</th><td id="profCollege">National Institute of Technology</td></tr>
+              <tr><th>Department</th><td id="profDept">Computer Science and Engineering</td></tr>
+              <tr><th>Year of Study</th><td id="profYear">3rd Year</td></tr>
+              <tr><th>Preferred Role</th><td id="profRole">Java Developer</td></tr>
+            </tbody>
+          </table>
+          <div style="margin-top:1rem; font-size:0.78rem; color:var(--text-muted);">
+            Record retrieved via JDBC PreparedStatement: <code>SELECT * FROM users WHERE user_id = ?</code>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title" style="margin-bottom:0.75rem;">Skills Inventory Management</h3>
+          <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:1rem;">
+            Update your registered technical skills. Modifications are saved to the MySQL <code>user_skills</code> relational table via <code>ProfileServlet</code>.
+          </p>
+
+          <div style="display:flex; flex-direction:column; gap:0.75rem;">
+            <label class="form-label" style="margin-bottom:0;">Add a Technical Skill:</label>
+            <div style="display:flex; gap:0.5rem;">
+              <select id="profileSkillAddSelect" class="form-select" style="flex:1;">
+                <option value="Java">Java</option>
+                <option value="Python">Python</option>
+                <option value="HTML">HTML</option>
+                <option value="CSS">CSS</option>
+                <option value="JavaScript">JavaScript</option>
+                <option value="MySQL">MySQL</option>
+                <option value="JDBC">JDBC</option>
+                <option value="Servlet">Servlet</option>
+                <option value="React">React</option>
+                <option value="Node.js">Node.js</option>
+                <option value="Spring Boot">Spring Boot</option>
+                <option value="Git">Git</option>
+                <option value="Docker">Docker</option>
+                <option value="AWS">AWS</option>
+                <option value="Pandas">Pandas</option>
+                <option value="NumPy">NumPy</option>
+                <option value="Selenium">Selenium</option>
+                <option value="JUnit">JUnit</option>
+                <option value="PostgreSQL">PostgreSQL</option>
+                <option value="Linux">Linux</option>
+                <option value="REST API">REST API</option>
+              </select>
+              <button type="button" class="btn btn-primary" onclick="DashboardController.addSkill(document.getElementById('profileSkillAddSelect').value)">
+                + Add Skill
+              </button>
+            </div>
+
+            <div style="margin-top:1rem;">
+              <label class="form-label">Current Skills in Database:</label>
+              <div id="profileCurrentSkills" class="skills-wrap" style="margin-top:0.35rem;">
+                <!-- Mirrored from studentSkills -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 3: All Roles Database Catalogue                                 -->
+    <!-- =================================================================== -->
+    <div id="tab-allroles" class="tab-panel">
+      <div style="margin-bottom:1.25rem;">
+        <h3 style="font-size:1.25rem; font-weight:700;">Predefined Industry Roles in MySQL</h3>
+        <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:0.25rem;">
+          Loaded from <code>roles</code> and <code>role_skills</code> tables via <code>RoleServlet</code>.
+        </p>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Role Name</th>
+              <th>Category</th>
+              <th>Min Experience</th>
+              <th>Required Skills</th>
+              <th>Role Description</th>
+            </tr>
+          </thead>
+          <tbody id="allRolesTableBody">
+            <!-- Populated via AJAX RoleServlet -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 4: XML + XPath Laboratory                                       -->
+    <!-- =================================================================== -->
+    <div id="tab-xpath" class="tab-panel">
+      <div class="xpath-console">
+        <div class="xpath-console-title">
+          <span>⚡ XML &amp; XPath Query Console (Querying <code>roles.xml</code>)</span>
+        </div>
+        <p style="font-size:0.85rem; color:#cbd5e1; line-height:1.5;">
+          This interactive module queries <code>/webapp/data/roles.xml</code> using Java's <code>javax.xml.xpath.XPathFactory</code> engine in <code>XPathServlet</code>.
+        </p>
+
+        <!-- Quick XPath Preset Queries -->
+        <div style="margin-top:1rem;">
+          <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.04em; color:#94a3b8; font-weight:700; margin-bottom:0.4rem;">
+            Click a Preset Lab XPath Query:
+          </div>
+          <div class="xpath-quick-queries">
+            <button class="xpath-quick-btn" onclick="DashboardController.setXPathPreset('//role[category=\'Backend\']')">
+              //role[category='Backend']
+            </button>
+            <button class="xpath-quick-btn" onclick="DashboardController.setXPathPreset('//role[skills/skill=\'Java\']')">
+              //role[skills/skill='Java']
+            </button>
+            <button class="xpath-quick-btn" onclick="DashboardController.setXPathPreset('//role[skills/skill=\'Python\']')">
+              //role[skills/skill='Python']
+            </button>
+            <button class="xpath-quick-btn" onclick="DashboardController.setXPathPreset('//role[experience=\'0-1 years\']')">
+              //role[experience='0-1 years']
+            </button>
+            <button class="xpath-quick-btn" onclick="DashboardController.setXPathPreset('//role[category=\'Full Stack\']')">
+              //role[category='Full Stack']
+            </button>
+            <button class="xpath-quick-btn" onclick="DashboardController.setXPathPreset('//role')">
+              //role (All Roles)
+            </button>
+          </div>
+        </div>
+
+        <!-- Query Input Field -->
+        <div class="xpath-query-bar">
+          <input type="text" id="xpathQueryInput" class="xpath-input" value="//role[skills/skill='Java']" placeholder="Enter XPath expression (e.g. //role[category='Backend'])">
+          <button id="xpathExecuteBtn" class="btn btn-primary btn-sm" style="background:#2563eb; border:none; padding:0.6rem 1.25rem;">
+            Execute XPath
+          </button>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1rem; font-size:0.8rem;">
+          <span style="color:#94a3b8;">Matched Nodes Output:</span>
+          <span id="xpathResultCount" style="color:#60a5fa; font-family:var(--font-mono); font-weight:bold;">Ready to evaluate</span>
+        </div>
+
+        <pre id="xpathResultsBox" class="xpath-results-box">// Click 'Execute XPath' or a preset query above to test live XML parsing.</pre>
+
+        <div style="margin-top:0.75rem;">
+          <div style="font-size:0.75rem; color:#94a3b8; font-weight:bold; margin-bottom:0.35rem;">Equivalent Java Servlet Code:</div>
+          <pre id="xpathJavaCodeSnippet" style="background:#020617; padding:0.75rem; border-radius:4px; font-size:0.76rem; color:#a5f3fc; overflow-x:auto;">
+XPathFactory factory = XPathFactory.newInstance();
+XPath xpath = factory.newXPath();
+XPathExpression expr = xpath.compile("//role[skills/skill='Java']");
+NodeList nodes = (NodeList) expr.evaluate(document, XPathConstants.NODESET);</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 5: Cookies & Session Live Inspector                             -->
+    <!-- =================================================================== -->
+    <div id="tab-cookies" class="tab-panel">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+        
+        <div class="card">
+          <h3 class="card-title">HTTP Session (Server State)</h3>
+          <p style="font-size:0.85rem; color:var(--text-secondary); margin:0.5rem 0 1rem;">
+            Demonstrates <code>HttpServletRequest.getSession(true)</code> and session attributes stored on the server.
+          </p>
+
+          <table class="table" style="font-size:0.82rem;">
+            <tbody>
+              <tr>
+                <th style="width:35%;">Session ID</th>
+                <td><code id="inspectorSessionId">RM_SESS_892147</code></td>
+              </tr>
+              <tr>
+                <th>Created In</th>
+                <td><code>LoginServlet.java</code> via <code>request.getSession()</code></td>
+              </tr>
+              <tr>
+                <th>Timeout</th>
+                <td>30 Minutes (configured in <code>web.xml</code>)</td>
+              </tr>
+              <tr>
+                <th>Stored Attributes</th>
+                <td><code>userId</code>, <code>userName</code>, <code>email</code>, <code>preferredRole</code>, <code>userSkills</code></td>
+              </tr>
+              <tr>
+                <th>Invalidation</th>
+                <td>Handled by <code>LogoutServlet</code> (<code>session.invalidate()</code>)</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="margin-top:1.25rem;">
+            <button class="btn btn-danger btn-sm" onclick="DashboardController.logout()">
+              Invalidate Session via LogoutServlet
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Browser Cookies (Client State)</h3>
+          <p style="font-size:0.85rem; color:var(--text-secondary); margin:0.5rem 0 1rem;">
+            Demonstrates setting and reading cookies using <code>new Cookie()</code> in Java and <code>document.cookie</code> in JavaScript.
+          </p>
+
+          <div id="cookieListDisplay" style="margin-bottom:1.25rem;">
+            <!-- Populated with active cookies -->
+          </div>
+
+          <div style="background:var(--canvas-bg); padding:1rem; border-radius:var(--radius-md); border:1px solid var(--surface-border);">
+            <div style="font-size:0.8rem; font-weight:700; margin-bottom:0.5rem;">Test Creating a New Cookie:</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr auto; gap:0.5rem;">
+              <input type="text" id="customCookieKey" class="form-input" placeholder="Cookie Name" style="padding:0.4rem; font-size:0.8rem;" value="preferred_category">
+              <input type="text" id="customCookieVal" class="form-input" placeholder="Cookie Value" style="padding:0.4rem; font-size:0.8rem;" value="Backend">
+              <button type="button" class="btn btn-primary btn-sm" onclick="DashboardController.setCustomCookie()">
+                Save Cookie
+              </button>
+            </div>
+            <div style="font-size:0.72rem; color:var(--text-muted); margin-top:0.35rem;">
+              Saved using: <code>document.cookie = "key=value; max-age=604800; path=/"</code>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Live AJAX Network Trace Strip -->
+    <div style="margin-top:2.5rem; background:#0f172a; border-radius:var(--radius-lg); padding:1rem 1.25rem; color:#f8fafc;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+        <span style="font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#94a3b8;">
+          📡 Live AJAX-to-Servlet Request/Response Trace
+        </span>
+        <span style="font-size:0.72rem; color:#60a5fa; font-family:var(--font-mono);">
+          XMLHttpRequest Activity
+        </span>
+      </div>
+      <div id="liveAjaxTraceLog" style="max-height:120px; overflow-y:auto;">
+        <div style="font-size:0.75rem; color:#64748b; font-family:var(--font-mono);">
+          Listening for asynchronous requests to Java Servlets (/MatchServlet, /ProfileServlet, /XPathServlet)...
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL: Lab Code Viewer & Viva Voce Companion                          -->
+  <!-- ===================================================================== -->
+  <div id="codeViewerModal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title">Web Technology Lab Code &amp; Viva Companion</h2>
+          <div style="font-size:0.78rem; color:var(--text-muted); margin-top:0.2rem;">
+            Inspect complete Java Servlets, XML schemas, SQL scripts, and Viva Voce questions
+          </div>
+        </div>
+        <button id="closeCodeModalBtn" class="modal-close">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="code-viewer-container">
+          <!-- Action Buttons -->
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+            <div style="font-size:0.85rem; font-weight:600; color:var(--text-primary);">
+              Viewing: <span id="codeViewerCurrentFile" style="font-family:var(--font-mono); color:var(--brand-primary);">LoginServlet.java</span>
+            </div>
+            <div style="display:flex; gap:0.5rem;">
+              <button class="btn btn-primary btn-sm" onclick="DashboardController.downloadProjectZip()">
+                📦 Download Complete Java EE Project (.ZIP)
+              </button>
+            </div>
+          </div>
+
+          <!-- File Switcher Tabs -->
+          <div class="code-tabs">
+            <button class="code-tab-btn active" data-file="LoginServlet.java" onclick="DashboardController.loadSourceCode('LoginServlet.java')">LoginServlet.java</button>
+            <button class="code-tab-btn" data-file="MatchServlet.java" onclick="DashboardController.loadSourceCode('MatchServlet.java')">MatchServlet.java</button>
+            <button class="code-tab-btn" data-file="XPathServlet.java" onclick="DashboardController.loadSourceCode('XPathServlet.java')">XPathServlet.java</button>
+            <button class="code-tab-btn" data-file="RegisterServlet.java" onclick="DashboardController.loadSourceCode('RegisterServlet.java')">RegisterServlet.java</button>
+            <button class="code-tab-btn" data-file="UserDAO.java" onclick="DashboardController.loadSourceCode('UserDAO.java')">UserDAO.java</button>
+            <button class="code-tab-btn" data-file="DBConnection.java" onclick="DashboardController.loadSourceCode('DBConnection.java')">DBConnection.java</button>
+            <button class="code-tab-btn" data-file="roles.xml" onclick="DashboardController.loadSourceCode('roles.xml')">roles.xml</button>
+            <button class="code-tab-btn" data-file="web.xml" onclick="DashboardController.loadSourceCode('web.xml')">web.xml</button>
+            <button class="code-tab-btn" data-file="role_matcher.sql" onclick="DashboardController.loadSourceCode('role_matcher.sql')">role_matcher.sql</button>
+            <button class="code-tab-btn" data-file="VIVA_QUESTIONS.md" onclick="DashboardController.loadSourceCode('VIVA_QUESTIONS.md')">15 Viva Q&amp;A</button>
+          </div>
+
+          <!-- Source Code Box -->
+          <pre id="codeViewerPre" class="code-pre">Loading code...</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="/api/download-project">Download Full Project (.zip)</a>
+    </div>
+    <div>RoleMatch – Web Technology Lab Project · 100% Core Technologies</div>
+  </footer>
+
+  <script src="/js/ajax.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/dashboard.js"></script>
+  <script src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      DashboardController.init();
+    });
+  </script>
+</body>
+</html>

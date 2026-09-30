@@ -1,0 +1,6 @@
+{
+  "name": "RoleMatch – Student Role Matching System",
+  "description": "A complete Web Technology Lab project demonstrating HTML5, CSS3, JavaScript, Java Servlets, HTTP Session, Cookies, AJAX, XML, XPath, MySQL, and JDBC.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

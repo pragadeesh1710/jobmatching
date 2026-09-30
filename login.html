@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Login – RoleMatch</title>
+  <meta name="description" content="Student Login for RoleMatch System demonstrating Java Servlet authentication, HTTP Session creation, and Cookie persistence." />
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-link">
+        RoleMatch
+        <span class="brand-badge">Login Module</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="login.html" class="active">Student Login</a>
+        <a href="register.html">Register</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="register.html" class="btn btn-primary btn-sm">Create Profile</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="auth-wrapper">
+      <div class="auth-card">
+        <div class="auth-header">
+          <h1>Student Login</h1>
+          <p>Authenticate with your academic credentials</p>
+        </div>
+
+        <!-- Alert messages -->
+        <div id="loginAlert" style="display: none;"></div>
+
+        <!-- Cookie Demonstration Notice -->
+        <div id="cookieGreeting" class="alert alert-info" style="display: none;"></div>
+
+        <!-- Login Form -->
+        <form id="loginForm" method="POST" action="/LoginServlet" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="email">Student Email Address</label>
+            <input type="email" id="email" name="email" class="form-input" placeholder="e.g. rahul.sharma@college.edu" required autocomplete="email">
+            <div id="emailError" class="form-error"></div>
+            <div class="form-hint">Stored in MySQL users table. Checks against email column.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required autocomplete="current-password">
+            <div id="passwordError" class="form-error"></div>
+          </div>
+
+          <!-- Cookie Feature: Remember Me -->
+          <div class="form-group">
+            <div class="checkbox-group">
+              <input type="checkbox" id="remember" name="remember">
+              <label for="remember" class="checkbox-label">
+                Remember my email on this computer (uses HTTP Cookie <code>remember_user</code>)
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" id="loginSubmitBtn" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem; padding: 0.75rem;">
+            Log In via LoginServlet
+          </button>
+        </form>
+
+        <!-- Quick Demo Credentials for Fast Viva Testing -->
+        <div style="margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--surface-border);">
+          <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem;">
+            ⚡ Quick Demo Accounts (Pre-seeded in MySQL):
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.8rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 0.4rem 0.6rem; border-radius: 4px; border: 1px solid #e2e8f0;">
+              <div><strong>Rahul Sharma</strong> (Java Aspirant): <code>rahul.sharma@college.edu</code></div>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="AuthController.fillDemo('rahul.sharma@college.edu', 'pass123')">Use</button>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 0.4rem 0.6rem; border-radius: 4px; border: 1px solid #e2e8f0;">
+              <div><strong>Priya Patel</strong> (Full Stack Aspirant): <code>priya.patel@college.edu</code></div>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="AuthController.fillDemo('priya.patel@college.edu', 'pass123')">Use</button>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 0.4rem 0.6rem; border-radius: 4px; border: 1px solid #e2e8f0;">
+              <div><strong>Amit Verma</strong> (Data Analyst Aspirant): <code>amit.verma@college.edu</code></div>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="AuthController.fillDemo('amit.verma@college.edu', 'pass123')">Use</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.25rem; text-align: center; font-size: 0.85rem; color: var(--text-secondary);">
+          Don't have a profile yet? <a href="register.html">Register here</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div>RoleMatch – Web Technology Lab Project · Demonstrates Java Servlets, Sessions, and Cookies</div>
+  </footer>
+
+  <script src="/js/ajax.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      AuthController.initLogin();
+
+      // Check if URL contains ?logout=true
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('logout') === 'true') {
+        const alertBox = document.getElementById('loginAlert');
+        if (alertBox) {
+          alertBox.className = 'alert alert-info';
+          alertBox.innerHTML = '<strong>Logged Out:</strong> Your HTTP Session has been invalidated successfully on the server.';
+          alertBox.style.display = 'block';
+        }
+      }
+    });
+  </script>
+</body>
+</html>

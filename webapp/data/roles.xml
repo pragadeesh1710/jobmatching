@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Web Technology Lab: XML + XPath Demonstration
+    File: roles.xml
+    Description: Stores comprehensive industry job role definitions, categories, and skill requirements.
+    Can be queried via XPath expressions such as:
+      1. All roles in Backend category: //role[category='Backend']/name/text()
+      2. Roles requiring 'Java' skill: //role[skills/skill='Java']/name/text()
+      3. Roles with minimum experience '0-1 years': //role[experience='0-1 years']/name/text()
+-->
+<roles>
+    <role id="R01">
+        <name>Java Developer</name>
+        <category>Backend</category>
+        <experience>0-1 years</experience>
+        <salary_range>INR 5,00,000 - 8,50,000</salary_range>
+        <description>Develop robust enterprise backend applications and microservices using Core Java, JDBC, Servlets, and MySQL.</description>
+        <skills>
+            <skill>Java</skill>
+            <skill>JDBC</skill>
+            <skill>Servlet</skill>
+            <skill>MySQL</skill>
+            <skill>Git</skill>
+        </skills>
+    </role>
+
+    <role id="R02">
+        <name>Web Developer</name>
+        <category>Full Stack</category>
+        <experience>0-1 years</experience>
+        <salary_range>INR 4,50,000 - 7,00,000</salary_range>
+        <description>Build interactive and responsive user-facing websites using HTML5, CSS3, modern JavaScript, and MySQL databases.</description>
+        <skills>
+            <skill>HTML</skill>
+            <skill>CSS</skill>
+            <skill>JavaScript</skill>
+            <skill>MySQL</skill>
+            <skill>Git</skill>
+        </skills>
+    </role>
+
+    <role id="R03">
+        <name>Frontend Developer</name>
+        <category>Frontend</category>
+        <experience>0-1 years</experience>
+        <salary_range>INR 5,00,000 - 8,00,000</salary_range>
+        <description>Design and implement fluid, accessible, and performant web interfaces utilizing HTML, CSS, JavaScript, and React.</description>
+        <skills>
+            <skill>HTML</skill>
+            <skill>CSS</skill>
+            <skill>JavaScript</skill>
+            <skill>React</skill>
+            <skill>Git</skill>
+        </skills>
+    </role>
+
+    <role id="R04">
+        <name>Backend Developer</name>
+        <category>Backend</category>
+        <experience>1-2 years</experience>
+        <salary_range>INR 6,00,000 - 10,00,000</salary_range>
+        <description>Design scalable server-side architectures, RESTful APIs, and secure database integrations using Java, Node.js, and SQL.</description>
+        <skills>
+            <skill>Java</skill>
+            <skill>MySQL</skill>
+            <skill>REST API</skill>
+            <skill>Linux</skill>
+            <skill>Git</skill>
+        </skills>
+    </role>
+
+    <role id="R05">
+        <name>Full Stack Developer</name>
+        <category>Full Stack</category>
+        <experience>1-2 years</experience>
+        <salary_range>INR 7,00,000 - 12,00,000</salary_range>
+        <description>End-to-end development of dynamic web applications encompassing frontend UI, server servlets, APIs, and relational databases.</description>
+        <skills>
+            <skill>Java</skill>
+            <skill>HTML</skill>
+            <skill>CSS</skill>
+            <skill>JavaScript</skill>
+            <skill>MySQL</skill>
+            <skill>REST API</skill>
+        </skills>
+    </role>
+
+    <role id="R06">
+        <name>Python Developer</name>
+        <category>Backend</category>
+        <experience>0-1 years</experience>
+        <salary_range>INR 5,50,000 - 9,00,000</salary_range>
+        <description>Create data processing pipelines, automation scripts, and web services using Python, REST APIs, and SQL databases.</description>
+        <skills>
+            <skill>Python</skill>
+            <skill>MySQL</skill>
+            <skill>REST API</skill>
+            <skill>Git</skill>
+            <skill>Linux</skill>
+        </skills>
+    </role>
+
+    <role id="R07">
+        <name>Data Analyst</name>
+        <category>Data Science</category>
+        <experience>0-1 years</experience>
+        <salary_range>INR 5,00,000 - 8,50,000</salary_range>
+        <description>Extract, clean, analyze, and visualize complex datasets using Python, Pandas, NumPy, and advanced SQL querying.</description>
+        <skills>
+            <skill>Python</skill>
+            <skill>MySQL</skill>
+            <skill>Pandas</skill>
+            <skill>NumPy</skill>
+        </skills>
+    </role>
+
+    <role id="R08">
+        <name>Software Tester</name>
+        <category>Quality Assurance</category>
+        <experience>0-1 years</experience>
+        <salary_range>INR 4,00,000 - 6,50,000</salary_range>
+        <description>Ensure software quality, reliability, and correctness through automated test suites, Selenium, and JUnit frameworks.</description>
+        <skills>
+            <skill>Java</skill>
+            <skill>Selenium</skill>
+            <skill>JUnit</skill>
+            <skill>Git</skill>
+        </skills>
+    </role>
+
+    <role id="R09">
+        <name>Database Developer</name>
+        <category>Database</category>
+        <experience>1-2 years</experience>
+        <salary_range>INR 6,00,000 - 9,50,000</salary_range>
+        <description>Architect relational database schemas, write complex SQL queries, and optimize stored procedures using MySQL and PostgreSQL.</description>
+        <skills>
+            <skill>MySQL</skill>
+            <skill>PostgreSQL</skill>
+            <skill>JDBC</skill>
+            <skill>Linux</skill>
+        </skills>
+    </role>
+
+    <role id="R10">
+        <name>DevOps Engineer</name>
+        <category>DevOps</category>
+        <experience>1-2 years</experience>
+        <salary_range>INR 7,50,000 - 13,00,000</salary_range>
+        <description>Automate CI/CD deployment pipelines, manage containerized environments with Docker, Linux systems, and cloud infrastructure.</description>
+        <skills>
+            <skill>Linux</skill>
+            <skill>Docker</skill>
+            <skill>Git</skill>
+            <skill>AWS</skill>
+        </skills>
+    </role>
+</roles>
